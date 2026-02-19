@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="particles" aria-hidden="true"></div>
+    <div class="bg-motion" aria-hidden="true">
+        <span class="sports-equipment cricket-ball">🏏</span>
+        <span class="sports-equipment football">⚽</span>
+        <span class="sports-equipment basketball">🏀</span>
+        <span class="sports-equipment tennis-ball">🎾</span>
+        <span class="sports-equipment baseball">⚾</span>
+        <span class="sports-equipment volleyball">🏐</span>
+        <span class="sports-equipment cricket-bat">🏏</span>
+        <span class="sports-equipment football-gloves">🧤</span>
+    </div>
+
+    <div class="app-shell fade-in">
+        <aside class="sidebar panel slide-up">
+            <h1>Sports Platform</h1>
+            <p class="sub">Play local. Compete smarter.</p>
+
+            <nav class="nav-tabs">
+                <button class="tab-btn active" data-tab="discover-view">Discover</button>
+                <button class="tab-btn" data-tab="auth-view">Account</button>
+                <button class="tab-btn" data-tab="registrations-view">My Registrations</button>
+                <button class="tab-btn hidden" id="organizer-tab-btn" data-tab="organizer-view">Organizer Hub</button>
+            </nav>
+
+            <div class="status-wrap">
+                <p id="auth-status">Not logged in</p>
+                <button id="logout-btn" class="ghost hidden">Logout</button>
+            </div>
+        </aside>
+
+        <main class="content-stack">
+            <section class="topbar panel slide-up">
+                <div>
+                    <h2>Local Tournament Network</h2>
+                    <p>Everything in one place, separated into clear workspaces.</p>
+                </div>
+                <p id="message" class="message"></p>
+            </section>
+
+            <section class="view panel active slide-up" id="discover-view">
+                <div class="view-head">
+                    <h3>Nearby Tournaments</h3>
+                    <div class="controls">
+                        <input type="text" id="discover-location" placeholder="Search location">
+                        <input type="number" id="discover-lat" placeholder="Latitude" step="0.000001">
+                        <input type="number" id="discover-lng" placeholder="Longitude" step="0.000001">
+                        <button id="apply-discover-coords" type="button" class="ghost">Set Coordinates</button>
+                        <label for="radius">Radius</label>
+                        <select id="radius">
+                            <option value="10">10 km</option>
+                            <option value="25">25 km</option>
+                            <option value="50" selected>50 km</option>
+                            <option value="100">100 km</option>
+                        </select>
+                        <button id="locate-btn">Use My Location</button>
+                    </div>
+                </div>
+                
+                <div class="search-filters">
+                    <input type="text" id="tournament-search" placeholder="Search tournaments by name or sport...">
+                    <select id="sport-filter">
+                        <option value="">All Sports</option>
+                        <option value="basketball">Basketball</option>
+                        <option value="football">Football</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="cricket">Cricket</option>
+                        <option value="tennis">Tennis</option>
+                        <option value="volleyball">Volleyball</option>
+                        <option value="baseball">Baseball</option>
+                    </select>
+                    <select id="fee-filter">
+                        <option value="">All Entry Fees</option>
+                        <option value="free">Free</option>
+                        <option value="0-500">Under ₹500</option>
+                        <option value="500-1000">₹500-₹1000</option>
+                        <option value="1000-2000">₹1000-₹2000</option>
+                        <option value="2000+">Over ₹2000</option>
+                    </select>
+                    <button id="clear-filters" class="ghost">Clear Filters</button>
+                </div>
+                
+                <div id="discover-map" class="map-canvas"></div>
+                <div id="tournament-list" class="cards"></div>
+            </section>
+
+            <section class="view panel slide-up" id="auth-view">
+                <h3>Account Access</h3>
+                <div class="auth-grid">
+                    <form id="register-form">
+                        <h4>Create Account</h4>
+                        <input type="text" id="reg-name" placeholder="Name" required>
+                        <input type="email" id="reg-email" placeholder="Email" required>
+                        <input type="password" id="reg-password" placeholder="Password" required>
+                        <select id="reg-role" required>
+                            <option value="player">Player</option>
+                            <option value="organizer">Organizer</option>
+                        </select>
+                        <button type="submit">Register</button>
+                    </form>
+
+                    <form id="login-form">
+                        <h4>Login</h4>
+                        <input type="email" id="login-email" placeholder="Email" required>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="view panel slide-up" id="registrations-view">
+                <div class="view-head">
+                    <h3>My Registrations</h3>
+                    <button id="load-registrations-btn" class="ghost">Refresh</button>
+                </div>
+                <div id="registration-list" class="cards"></div>
+            </section>
+
+            <section class="view panel slide-up" id="organizer-view">
+                <h3>Create Tournament</h3>
+                <form id="create-tournament-form" class="create-grid">
+                    <input type="text" id="t-name" placeholder="Tournament name" required>
+                    <input type="text" id="t-sport" placeholder="Sport" required>
+                    <input type="date" id="t-date" required>
+                    <input type="number" id="t-fee" placeholder="Entry fee" min="0" step="0.01" required>
+                    <select id="t-mode" required>
+                        <option value="individual">Individual</option>
+                        <option value="team">Team</option>
+                    </select>
+                    <input type="text" id="t-location" placeholder="Search tournament location" required>
+                    <input type="number" id="t-lat" placeholder="Latitude" step="0.000001">
+                    <input type="number" id="t-lng" placeholder="Longitude" step="0.000001">
+                    <p id="t-location-coords" class="coord-hint">No location selected</p>
+                    <div id="organizer-map" class="map-canvas"></div>
+                    <button type="submit">Publish Tournament</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.js"></script>
+    <script src="js/app.js?v=3"></script>
+</body>
+</html>
